@@ -1,5 +1,6 @@
-import { Controller, Get, Req, Post, HttpCode, Header, Param, Body } from '@nestjs/common';
-import { Request } from 'express';
+import { Controller, Get, Req, Res, Post, Patch, Delete, HttpCode, Header, Param, Body, HttpStatus } from '@nestjs/common';
+import { CreateCatDto } from './dto/create-cat.dto';
+import { Request, Response } from 'express';
 
 @Controller('cats')
 export class CatsController {
@@ -25,8 +26,20 @@ export class CatsController {
   @Post()
   @HttpCode(201)
   @Header('Cache-Control', 'none')
-  create(): string {
-    return 'This create a new cat.'
+  create(@Body() body): string {
+    return JSON.stringify(body);
   }
 
+  @Patch(':id')
+  update(@Body() createCatDto: CreateCatDto): string {
+    return JSON.stringify(createCatDto);
+  }
+
+  @Delete(':id')
+  delete(@Res() res: Response) {
+    res.status(HttpStatus.OK).json({
+      message: "It works!"
+    });
+  }
+  
 }
